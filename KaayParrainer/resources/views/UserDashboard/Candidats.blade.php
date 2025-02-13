@@ -13,4 +13,6 @@
     {{-- <h1 class="text-2xl font-bold">Bienvenue, {{ $user->name }}</h1>
     <p>Email : {{ $user->email }}</p>
     <p>Date d'inscription : {{ $user->created_at->format('d/m/Y') }}</p>--}}
+    <p>Page dédiée aux électeurs.</p>
+
 @endsection
