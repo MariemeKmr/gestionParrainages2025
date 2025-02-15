@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="flex justify-center items-center h-screen bg-gray-100">
-    <div class="w-full max-w-md bg-white shadow-md rounded-lg p-6">
+<div class="flex justify-center items-start bg-gray-100 pt-4">
+    <div class="w-full max-w-md bg-white shadow-md rounded-lg p-5">
+        <!-- Le contenu du formulaire reste inchangé -->
         <h2 class="text-2xl font-bold text-center text-gray-800">Inscription</h2>
         <p class="text-gray-600 text-center mb-4">Créez votre compte en remplissant les informations ci-dessous.</p>
 
@@ -74,4 +75,5 @@
         </form>
     </div>
 </div>
+
 @endsection

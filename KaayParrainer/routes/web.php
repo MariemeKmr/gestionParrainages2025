@@ -1,17 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StatistiqueController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ParrainageController;
+
 Route::get('/', function () {
     return view('welcome    ');
-});
-
-Route::get('/CandidatDashboard', function () {
-    return view('UserDashboard.Candidats');
-});
-
-Route::get('/ElecteurDashboard', function () {
-    return view('UserDashboard.Electeurs');
 });
 
 Route::get('/login', function () {
@@ -22,23 +20,33 @@ Route::get('/register', function () {
     return view('auth.PageInscription');
 })->name('register');
 
+Route::get('/CandidatDashboard', function () {
+    return view('Utilisateurs.Candidat.CandidatDashboard');
+});
 
-// use Illuminate\Support\Facades\Route;
-// use Illuminate\Support\Facades\Auth;
-// use App\Models\candidat;
+Route::get('/ElecteurDashboard', function () {
+    return view('Utilisateurs.Electeur.ElecteursDashboard');
+});
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/ContentDashboard', function () {
+    return view('Utilisateurs.ContentDashboard');
+});
 
-// // Dashboard Candidat avec données utilisateur
-// Route::get('/CandidatDashboard', function () {
-//     $user = Auth::user(); // Récupérer l'utilisateur connecté
-//     return view('UserDashboard.Candidats', compact('user'));
-// })->middleware('auth'); // Protéger la route
+Route::get('/Contact', function () {
+    return view('Utilisateurs.Contact');
+});
 
-// // Dashboard Électeur avec données utilisateur
-// Route::get('/ElecteurDashboard', function () {
-//     $user = Auth::user();
-//     return view('UserDashboard.Electeurs', compact('user'));
-// })->middleware('auth');
+Route::get('/profil', [UserController::class, 'showProfile'])->name('userProfile');
+Route::get('/messages', [MessageController::class, 'index'])->name('Message');
+Route::get('/parrainage', [ParrainageController::class, 'parrainer'])->name('parrainage');
+Route::get('/Statistiques', [StatistiqueController::class, 'index'])->name('statistiques');
+
+
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', function (Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
+    })->name('logout');
+});
