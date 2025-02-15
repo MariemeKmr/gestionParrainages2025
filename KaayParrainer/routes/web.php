@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome    ');
 });
 
 Route::get('/CandidatDashboard', function () {
@@ -14,8 +14,14 @@ Route::get('/ElecteurDashboard', function () {
     return view('UserDashboard.Electeurs');
 });
 
+Route::get('/login', function () {
+    return view('auth.PageConnexion');
+})->name('login');
 
-// <?php
+Route::get('/register', function () {
+    return view('auth.PageInscription');
+})->name('register');
+
 
 // use Illuminate\Support\Facades\Route;
 // use Illuminate\Support\Facades\Auth;
