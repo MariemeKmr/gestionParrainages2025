@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('erreurs_electeurs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('fichier_electeur_id')->constrained('fichiers_electeurs')->onDelete('cascade');
+            $table->string('numero_carte_electeur');
+            $table->text('description_erreur');
             $table->timestamps();
         });
     }
