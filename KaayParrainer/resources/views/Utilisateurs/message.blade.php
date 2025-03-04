@@ -1,27 +1,36 @@
-@extends('Utilisateurs.BaseDashboard')
+<!-- resources/views/Utilisateurs/message.blade.php -->
 
-@section('Contenus')
-<div class="p-6">
-    <h1 class="text-3xl font-bold mb-6">Messages et Notifications</h1>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+</head>
+<body>
 
-    <div class="bg-white shadow-md rounded-lg p-4">
-        @if(isset($notifications) && $notifications->count() > 0)
-            <ul class="divide-y divide-gray-200">
-                @foreach($notifications as $notification)
-                    <li class="py-4">
-                        <div class="flex justify-between items-center">
-                            <span class="font-semibold text-gray-800">{{ $notification->title }}</span>
-                            <span class="text-gray-500 text-sm">
-                                {{ $notification->created_at->format('d/m/Y H:i') }}
-                            </span>
-                        </div>
-                        <p class="mt-2 text-gray-700">{{ $notification->message }}</p>
-                    </li>
-                @endforeach
-            </ul>
-        @else
-            <p class="text-gray-500">Aucune notification à afficher pour le moment.</p>
-        @endif
-    </div>
-</div>
-@endsection
+    <h1>Liste des messages</h1>
+
+    <!-- Affichage du message de succès s'il y en a -->
+    @if(session('success'))
+        <div>{{ session('success') }}</div>
+    @endif
+
+    <!-- Formulaire pour envoyer un nouveau message -->
+    <form action="{{ route('messages.store') }}" method="POST">
+        @csrf
+        <label for="message">Message:</label>
+        <textarea name="message" id="message" rows="4" cols="50"></textarea>
+        <button type="submit">Envoyer</button>
+    </form>
+
+    <h2>Messages envoyés:</h2>
+    @foreach ($messages as $message)
+        <div>
+            <p>{{ $message->content }}</p>
+            <small>Envoyé par : {{ $message->user->name }} le {{ $message->created_at->format('d/m/Y H:i') }}</small>
+        </div>
+    @endforeach
+
+</body>
+</html>
