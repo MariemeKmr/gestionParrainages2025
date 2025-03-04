@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('journal_activites', function (Blueprint $table) {
             $table->id();
+            $table->string('utilisateur');
+            $table->string('action');
+            $table->timestamp('date_action');
             $table->timestamps();
+    
         });
     }
 
