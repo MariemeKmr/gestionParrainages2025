@@ -5,7 +5,7 @@
     <div class="w-full max-w-md bg-white shadow-md rounded-lg p-5">
         <!-- Le contenu du formulaire reste inchangé -->
         <h2 class="text-2xl font-bold text-center text-gray-800">Inscription</h2>
-        <p class="text-gray-600 text-center mb-4">Créez votre compte en remplissant les informations ci-dessous.</p>
+        <p class="text-gray-600 text-center mb-4 mt-4">Créez votre compte en remplissant vos informations.</p>
 
         <form action="{{ route('register') }}" method="POST" class="mt-4">
             @csrf
@@ -73,6 +73,7 @@
                 </button>
             </div>
         </form>
+        <p class="mt-4 text-sm text-center">Deja inscrit ? <a href="{{ route('login') }}" class="text-blue-600 hover:underline">Se connecter</a></p>
     </div>
 </div>
 
