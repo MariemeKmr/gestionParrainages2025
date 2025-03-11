@@ -45,12 +45,12 @@
                         </li>
                         <li>
                             <a
-                                href="{{url('/statistique')}}"
+                                href="{{url('public.statistique')}}"
                                 class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Statistiques</a>
                         </li>
                         <li>
                             <a
-                                href="{{url('login')}}"
+                                href="{{url('auth.login')}}"
                                 class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Connexion</a>
                         </li>
                     </ul>
@@ -65,7 +65,7 @@
                 <p class="mt-4 text-lg">Une plateforme innovante pour centraliser, gérer et
                     suivre le parrainage des candidats aux élections présidentielles du Sénégal.</p>
                 <a
-                    href="{{url('/register')}}"
+                    href="{{url('auth.register')}}"
                     class="mt-6 inline-block bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100">Rejoindre la plateforme</a>
 
             </div>

@@ -3,35 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Message;  // Assure-toi d'avoir importé le modèle Message
-
+use App\Models\Message;
 class MessageController extends Controller
 {
-    // Afficher les messages
+    /**
+     * Affiche la liste paginée des Messages.
+     */
     public function index()
     {
-        // Récupérer tous les messages et les trier par date de création
-        $messages = Message::latest()->get();  // Tri par date (du plus récent au plus ancien)
-        
-        // Retourner la vue avec la liste des messages
-        return view('Utilisateurs.message', compact('messages'));
+        // Récupère les Messages les plus récentes avec une pagination de 10 par page
+        $Messages = Message::latest()->paginate(10);
+        return view('electeur.Message', compact('Messages'));
     }
 
-    // Enregistrer un nouveau message
-    public function store(Request $request)
+    /**
+     * Marque toutes les Messages comme lues.
+     */
+    public function markAllAsRead(Request $request)
     {
-        // Valider les données
-        $request->validate([
-            'message' => 'required|string|max:255',  // Assurez-vous que le champ 'message' est bien envoyé
-        ]);
+        // Ici, on met à jour toutes les Messages pour indiquer qu'elles ont été lues.
+        // Attention, en production, il est préférable de cibler les Messages de l'utilisateur connecté.
+        Message::query()->update(['read_at' => now()]);
 
-        // Créer un nouveau message dans la base de données
-        Message::create([
-            'user_id' => auth()->id(),  // Récupérer l'ID de l'utilisateur connecté
-            'content' => $request->message,  // Insérer le contenu du message dans le champ 'content'
-        ]);
-
-        // Rediriger vers la page des messages avec un message de succès
-        return redirect()->route('messages.index')->with('success', 'Message envoyé avec succès!');
+        return redirect()->back()->with('success', 'Toutes les Messages ont été marquées comme lues.');
     }
 }

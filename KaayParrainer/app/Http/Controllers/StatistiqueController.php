@@ -13,7 +13,7 @@ class StatistiqueController extends Controller
     {
         // Statistiques générales
         $totalElecteurs = Electeur::count();
-        $totalParrainages = CompteElecteur::where('status', true)->count();
+        $totalParrainages = Electeur::where('status', true)->count();
         $tauxParticipation = $totalElecteurs > 0 ? ($totalParrainages / $totalElecteurs) * 100 : 0;
 
         // Recherche d'un candidat spécifique
@@ -24,7 +24,7 @@ class StatistiqueController extends Controller
                 ->first();
         }
 
-        return view('statistiques.index', compact('totalElecteurs', 'totalParrainages', 'tauxParticipation', 'candidat'));
+        return view('public.statistique', compact('totalElecteurs', 'totalParrainages', 'tauxParticipation', 'candidat'));
     }
 }
 

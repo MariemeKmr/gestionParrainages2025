@@ -9,39 +9,39 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ParrainageController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('public.welcome');
 });
 
 Route::get('/login', function () {
-    return view('auth.PageConnexion');
+    return view('auth.login');
 })->name('login');
 
 Route::get('/register', function () {
-    return view('auth.PageInscription');
+    return view('auth.register');
 })->name('register');
 
-Route::get('/CandidatDashboard', function () {
-    return view('Utilisateurs.Candidat.CandidatDashboard');
+Route::get('/otp-verfication', function () {
+    return view('auth.otp_register');
+})->name('otp_register');
+
+Route::get('/candidatDashboard', function () {
+    return view('candidat.dashboard');
 });
 
-Route::get('/ElecteurDashboard', function () {
-    return view('Utilisateurs.Electeur.ElecteursDashboard');
+Route::get('/electeurDashboard', function () {
+    return view('electeur.dashboard');
 });
 
-Route::get('/ContentDashboard', function () {
-    return view('Utilisateurs.ContentDashboard');
+Route::get('/contentDashboard', function () {
+    return view('layout.dashboard');
 });
 
-Route::get('/Contact', function () {
-    return view('Utilisateurs.Contact');
+Route::get('/contact', function () {
+    return view('public.contact');
 });
 
-Route::get('/profil', [UserController::class, 'showProfile'])->name('userProfile');
-
-// Ajout des routes pour les messages
-Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
-Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
-
+Route::get('/profil', [UserController::class, 'showProfile'])->name('profil');
+Route::get('/messages', [MessageController::class, 'index'])->name('message');
 Route::get('/parrainage', [ParrainageController::class, 'parrainer'])->name('parrainage');
 Route::get('/Statistiques', [StatistiqueController::class, 'index'])->name('statistiques');
 
