@@ -9,7 +9,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ParrainageController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome    ');
 });
 
 Route::get('/login', function () {
@@ -37,13 +37,10 @@ Route::get('/Contact', function () {
 });
 
 Route::get('/profil', [UserController::class, 'showProfile'])->name('userProfile');
-
-// Ajout des routes pour les messages
-Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
-Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
-
+Route::get('/messages', [MessageController::class, 'index'])->name('Message');
 Route::get('/parrainage', [ParrainageController::class, 'parrainer'])->name('parrainage');
 Route::get('/Statistiques', [StatistiqueController::class, 'index'])->name('statistiques');
+
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', function (Request $request) {
