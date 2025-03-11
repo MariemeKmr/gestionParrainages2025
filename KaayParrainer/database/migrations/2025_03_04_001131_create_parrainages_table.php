@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('electeur_id')->constrained('electeurs')->onDelete('cascade');
             $table->foreignId('candidat_id')->constrained('candidats')->onDelete('cascade');
+            $table->string('code_verification')->nullable();
             $table->enum('statut', ['validé', 'en_attente', 'rejeté'])->default('en_attente');
-            $table->timestamp('date_parrainage');
             $table->timestamps();
         });
     }

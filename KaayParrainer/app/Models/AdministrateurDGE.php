@@ -12,5 +12,5 @@ class AdministrateurDGE extends Authenticatable
     protected $table = 'agentDGE';
     protected $primaryKey = 'id';
     public $incrementing = false;
-    protected $fillable = ['id', 'nom', 'prenom', 'email', 'motDePasse'];
+    protected $fillable = ['id', 'nom', 'prenom', 'email', 'password'];
 }

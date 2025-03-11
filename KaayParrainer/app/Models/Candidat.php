@@ -4,16 +4,32 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
-
-class Candidat extends Model {
+class Candidat extends Model
+{
     use HasFactory;
 
     protected $table = 'candidats';
-    protected $primaryKey = 'numCarteElecteur';
-    public $incrementing = false;
-    protected $fillable = ['numCarteElecteur', 'telephone', 'email', 'nomPartiPolitique', 'slogan', 'photo', 'troisCouleursParti', 'urlPageInfos'];
-}
+    protected $fillable = [
+        'nom', 
+        'prenom', 
+        'adresse_email', 
+        'numero_telephone', 
+        'parti_politique', 
+        'slogan', 
+        'photo', 
+        'trois_couleurs_parti', 
+        'url_page_infos',
+        'user_id',
+        'numero_carte_electeur',
+    ];
 
+    protected $casts = [
+        'trois_couleurs_parti' => 'array',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}

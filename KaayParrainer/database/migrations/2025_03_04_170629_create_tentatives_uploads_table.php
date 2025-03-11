@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('tentatives_uploads', function (Blueprint $table) {
             $table->id();
             $table->foreignId('fichier_electeur_id')->constrained('fichiers_electeurs')->onDelete('cascade');
-            $table->string('utilisateur');
+            $table->foreignID('user_id')->constrained()->onDelete('cascade');
             $table->string('adresse_ip');
-            $table->text('message_erreur');
+            $table->string('checksum');
+            $table->text('message_erreur')->nullable();
+            $table->text('message_succes')->nullable();
             $table->timestamps();
         });
     }

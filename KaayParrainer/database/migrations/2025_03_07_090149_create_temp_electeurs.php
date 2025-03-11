@@ -11,20 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('electeurs', function (Blueprint $table) {
+        Schema::create('temp_electeurs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('tentative_upload_id')->constrained('tentatives_uploads')->onDelete('cascade');
             $table->string('numero_carte_electeur')->unique();
             $table->string('numero_carte_identite')->unique();
             $table->string('nom');
             $table->string('prenom');
             $table->date('date_naissance');
             $table->string('lieu_naissance');
-            $table->enum('sexe', ['Masculin', 'Féminin']);
-            $table->string('adresse_email')->unique();
+            $table->string('sexe');
             $table->string('numero_telephone')->unique();
-            $table->integer('numero_bureau_vote');
-            $table->foreignId('candidat_id')->nullable()->constrained('candidats')->onDelete('set null');
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
+            $table->string('adresse_email')->unique();
+            $table->string('numero_bureau_vote');
             $table->timestamps();
         });
     }
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('electeurs');
+        Schema::dropIfExists('temp_electeurs');
     }
 };

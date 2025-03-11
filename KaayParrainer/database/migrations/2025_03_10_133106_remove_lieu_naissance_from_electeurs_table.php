@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fichiers_electeurs', function (Blueprint $table) {
-            $table->id();
-            $table->string('nom_fichier');
-            $table->string('checksum');
-            $table->string('utilisateur_upload');
-            $table->string('adresse_ip');
-            $table->timestamps();
+        Schema::table('electeurs', function (Blueprint $table) {
+            $table->dropColumn('lieu_naissance');
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fichiers_electeurs');
+        Schema::table('electeurs', function (Blueprint $table) {
+            $table->date('lieu_naissance')->nullable();
+        });
     }
 };

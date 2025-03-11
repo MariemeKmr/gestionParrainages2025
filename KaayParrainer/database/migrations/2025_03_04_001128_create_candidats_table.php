@@ -13,14 +13,17 @@ return new class extends Migration
     {
         Schema::create('candidats', function (Blueprint $table) {
             $table->id();
-            $table->string('numero_carte_electeur')->unique();
+            $table->string('nom');
+            $table->string('prenom');
+            $table->string('numero_carte_electeur')->unique()->default(Str::uuid());
             $table->string('adresse_email')->unique();
             $table->string('numero_telephone')->unique();
-            $table->string('nom_parti_politique')->nullable();
+            $table->string('parti_politique')->nullable();
             $table->string('slogan')->nullable();
             $table->string('photo')->nullable();
-            $table->string('trois_couleurs_parti')->nullable();
+            $table->json('trois_couleurs_parti')->nullable();
             $table->string('url_page_infos')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
