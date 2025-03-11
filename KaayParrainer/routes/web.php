@@ -45,6 +45,7 @@ Route::get('/messages', [MessageController::class, 'index'])->name('message');
 Route::get('/parrainage', [ParrainageController::class, 'parrainer'])->name('parrainage');
 Route::get('/Statistiques', [StatistiqueController::class, 'index'])->name('statistiques');
 
+
 Route::middleware('auth')->group(function () {
     Route::post('/logout', function (Request $request) {
         Auth::logout();
