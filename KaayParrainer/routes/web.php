@@ -7,44 +7,74 @@ use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ParrainageController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ElecteurController;
+use App\Http\Controllers\DgeAgentLoginController;
+use App\Http\Controllers\CandidatController;
+use App\Http\Controllers\MailController;
+
+Route::get('/send-email/{user}', [MailController::class, 'sendCandidatAccountCreatedEmail']);
+
+Route::middleware(['auth', 'role:agentdge'])->group(function () {
+    Route::get('/dashboard/dge', [CandidatController::class, 'index'])->name('dashboard.dge');
+    Route::resource('candidats', CandidatController::class);
+    Route::get('/dge/create-candidat', [AdminController::class, 'showCreateCandidatForm'])->name('dge.create-candidat.form');
+    Route::post('/dge/create-candidat', [AdminController::class, 'createCandidat'])->name('dge.create-candidat');
+    Route::get('/electeurs/import', [ElecteurController::class, 'showImportForm'])->name('electeurs.import.form');
+    Route::post('/electeurs/import', [ElecteurController::class, 'import'])->name('electeurs.import');
+    Route::post('/valider-importation', [ElecteurController::class, 'validerImportation'])->name('valider.importation');
+});
+
+Route::get('/login/dge', [DgeAgentLoginController::class, 'showLoginForm'])->name('login.dge');
+Route::post('/login/dge', [DgeAgentLoginController::class, 'login'])->name('login.dge.post');
+
 
 Route::get('/', function () {
     return view('public.welcome');
 });
 
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
+Route::get('/login/electeur', [ElecteurController::class, 'showLoginForm'])->name('login.electeur');
+Route::post('/login/electeur', [ElecteurController::class, 'login'])->name('login.electeur.post');
 
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
+Route::get('/login/candidat', [CandidatController::class, 'showLoginForm'])->name('login.candidat');
+Route::post('/login/candidat', [CandidatController::class, 'login'])->name('login.candidat.post');
 
-Route::get('/otp-verfication', function () {
-    return view('auth.otp_register');
-})->name('otp_register');
+Route::get('/register', [ElecteurController::class, 'showInitialForm'])->name('electeurs.register.form');
+Route::post('/register/verify', [ElecteurController::class, 'verifyInitialInfo'])->name('electeurs.verify');
+Route::get('/register/complete', [ElecteurController::class, 'showCompletionForm'])->name('electeurs.complete.form');
+Route::post('/register/complete', [ElecteurController::class, 'completeRegistration'])->name('electeurs.complete');
+Route::get('/register/validate', [ElecteurController::class, 'showValidationForm'])->name('electeurs.validate.form');
+Route::post('/register/validate', [ElecteurController::class, 'validateCode'])->name('electeurs.validate');
 
-Route::get('/candidatDashboard', function () {
-    return view('candidat.dashboard');
+Route::middleware('auth')->group(function () {
+    Route::middleware('role:candidat')->group(function () {
+        Route::get('/candidatDashboard', function () {
+            return view('candidat.dashboard');
+        })->name('candidat.dashboard');
+    });
+
+    Route::middleware('role:electeur')->group(function () {
+        Route::get('/electeurDashboard', function () {
+            return view('electeur.dashboard');
+        })->name('electeur.dashboard');
+    });
+
+    Route::get('/profil', [UserController::class, 'showProfile'])->name('profil');
+    Route::get('/messages', [MessageController::class, 'index'])->name('message');
+    Route::get('/parrainage', [ParrainageController::class, 'index'])->name('parrainage');
+    Route::post('/parrainage/{candidatId}', [ParrainageController::class, 'parrainer'])->name('parrainage.post');
+    Route::get('/parrainage/verify', [ParrainageController::class, 'showVerificationForm'])->name('parrainage.verify.form');
+    Route::post('/parrainage/verify', [ParrainageController::class, 'verifyCode'])->name('parrainage.verify');
 });
 
-Route::get('/electeurDashboard', function () {
-    return view('electeur.dashboard');
-});
-
-Route::get('/contentDashboard', function () {
-    return view('layout.dashboard');
-});
-
+Route::get('/listeCandidats', [CandidatController::class, 'idi'])->name('listeCandidats');
 Route::get('/contact', function () {
     return view('public.contact');
 });
 
-Route::get('/profil', [UserController::class, 'showProfile'])->name('profil');
-Route::get('/messages', [MessageController::class, 'index'])->name('message');
-Route::get('/parrainage', [ParrainageController::class, 'parrainer'])->name('parrainage');
 Route::get('/Statistiques', [StatistiqueController::class, 'index'])->name('statistiques');
 
+Route::post('/admin/create-candidat', [AdminController::class, 'createCandidat'])->middleware('auth:admin');
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', function (Request $request) {
