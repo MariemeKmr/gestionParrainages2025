@@ -1,4 +1,6 @@
-@extends('Utilisateurs.ContentDashboard')
-@section('contenus')
+@extends('layouts.app')
+
+@section('content')
+@include('layouts.sidebar')
 
 @endsection
