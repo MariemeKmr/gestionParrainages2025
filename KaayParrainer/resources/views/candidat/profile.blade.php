@@ -3,7 +3,7 @@
 @section('Contenus')
 
     <main class="flex-1 p-6">
-        <h1 class="text-3xl font-bold mb-6">Profil Utilisateur</h1>
+        <h1 class="text-3xl font-bold mb-6">Profil Candidat</h1>
 
         <!-- Carte Profil -->
         <div class="bg-white shadow-md rounded-lg p-6">
