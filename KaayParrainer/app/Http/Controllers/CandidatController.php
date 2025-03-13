@@ -10,12 +10,15 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MailCandidat;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\PasswordChangedNotification; // Importer la notification
+
 class CandidatController extends Controller
 {
     public function showLoginForm()
     {
         return view('candidats.login');
     }
+    
     public function login(Request $request)
     {
         $request->validate([
@@ -36,15 +39,16 @@ class CandidatController extends Controller
 
         return back()->withErrors(['email' => 'Les informations d\'identification ne correspondent pas.']);
     }
+
     public function index()
     {
         $candidats = Candidat::all();
         return view('dge.dashboard', compact('candidats'));
     }
+
     public function idi()
     {
         $candidats = Candidat::all();
-
         return view('public.listeCandidats', compact('candidats'));
     }
 
@@ -68,7 +72,8 @@ class CandidatController extends Controller
             'couleur3' => 'required|string',
             'url_info' => 'nullable|string',
         ]);
-        $password= Str::random(12);
+
+        $password = Str::random(12);
 
         $user = User::create([
             'name' => $request->nom . ' ' . $request->prenom,
@@ -84,7 +89,7 @@ class CandidatController extends Controller
         }
 
         // Créer le candidat
-        $candidat=Candidat::create([
+        $candidat = Candidat::create([
             'nom' => $request->nom,
             'prenom' => $request->prenom,
             'adresse_email' => $request->adresse_email,
@@ -97,6 +102,8 @@ class CandidatController extends Controller
             'user_id' => auth()->id(),
             'numero_carte_electeur' => Str::uuid()
         ]);
+
+        // Envoi d'email avec mot de passe généré
         Mail::to($candidat->adresse_email)->send(new MailCandidat($candidat, $password));
 
         return redirect()->route('dashboard.dge')->with('success', 'Candidat créé avec succès.');
@@ -140,6 +147,15 @@ class CandidatController extends Controller
             'trois_couleurs_parti' => json_encode([$request->couleur1, $request->couleur2, $request->couleur3]),
             'url_page_infos' => $request->url_info,
         ]);
+
+        // Si un mot de passe a été fourni et qu'il doit être mis à jour
+        if ($request->has('password') && !empty($request->password)) {
+            $candidat->user->password = Hash::make($request->password);
+            $candidat->user->save();
+
+            // Envoi de la notification pour le changement de mot de passe
+            $candidat->user->notify(new PasswordChangedNotification($candidat->nom));
+        }
 
         return redirect()->route('dashboard.dge')->with('success', 'Candidat mis à jour avec succès.');
     }
