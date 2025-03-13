@@ -28,7 +28,6 @@ Route::middleware(['auth', 'role:agentdge'])->group(function () {
 Route::get('/login/dge', [DgeAgentLoginController::class, 'showLoginForm'])->name('login.dge');
 Route::post('/login/dge', [DgeAgentLoginController::class, 'login'])->name('login.dge.post');
 
-
 Route::get('/', function () {
     return view('public.welcome');
 });
@@ -51,6 +50,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/candidatDashboard', function () {
             return view('candidat.dashboard');
         })->name('candidat.dashboard');
+
+        // Ajouter la route pour afficher le nombre de messages hebdomadaires
+        Route::get('/candidat/{candidat}/messages/weekly', [CandidatController::class, 'countWeeklyMessages'])->name('candidat.messages.weekly');
     });
 
     Route::middleware('role:electeur')->group(function () {

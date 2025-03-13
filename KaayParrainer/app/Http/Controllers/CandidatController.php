@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Candidat;
 use App\Models\Notification; // Importer le modèle Notification
+use App\Models\Message; // Importer le modèle Message pour le comptage des messages
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\User;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\MailCandidat;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\PasswordChangedNotification; // Importer la notification
+use Carbon\Carbon; // Pour travailler avec les dates
 
 class CandidatController extends Controller
 {
@@ -174,5 +176,28 @@ class CandidatController extends Controller
         $candidat->delete();
 
         return redirect()->route('dashboard.dge')->with('success', 'Candidat supprimé avec succès.');
+    }
+
+    // Nouvelle méthode pour compter les messages hebdomadaires
+    public function countWeeklyMessages(Candidat $candidat)
+    {
+        // Calculer la date de début de la semaine (par exemple, dimanche dernier)
+        $startOfWeek = Carbon::now()->startOfWeek();
+
+        // Compter les messages reçus par le candidat cette semaine
+        $messageCount = Message::where('candidat_id', $candidat->id)
+                               ->where('created_at', '>=', $startOfWeek)
+                               ->count();
+
+        // Enregistrer la notification dans la base de données
+        Notification::create([
+            'candidat_id' => $candidat->id,
+            'message' => "Vous avez reçu $messageCount messages cette semaine.",
+            'type' => 'weekly_message_count',
+            'read_at' => null, // Notification non lue
+        ]);
+
+        // Retourner la vue du dashboard avec le nombre de messages
+        return view('candidats.dashboard', compact('messageCount'));
     }
 }
