@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Candidat;
+use App\Models\Notification; // Importer le modèle Notification
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\User;
@@ -155,6 +156,14 @@ class CandidatController extends Controller
 
             // Envoi de la notification pour le changement de mot de passe
             $candidat->user->notify(new PasswordChangedNotification($candidat->nom));
+
+            // Enregistrer la notification dans la table "notifications"
+            Notification::create([
+                'candidat_id' => $candidat->id,
+                'message' => 'Votre mot de passe a été modifié.',
+                'type' => 'password_changed',
+                'read_at' => null, // Notification non lue
+            ]);
         }
 
         return redirect()->route('dashboard.dge')->with('success', 'Candidat mis à jour avec succès.');
