@@ -28,6 +28,7 @@ class Electeur extends Model
     {
         return $this->hasMany(Parrainage::class);
     }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

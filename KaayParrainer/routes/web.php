@@ -12,17 +12,22 @@ use App\Http\Controllers\ElecteurController;
 use App\Http\Controllers\DgeAgentLoginController;
 use App\Http\Controllers\CandidatController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\ParrainagePeriodController;
+use App\Http\Middleware\CheckParrainagePeriod;
 
 Route::get('/send-email/{user}', [MailController::class, 'sendCandidatAccountCreatedEmail']);
 
 Route::middleware(['auth', 'role:agentdge'])->group(function () {
     Route::get('/dashboard/dge', [CandidatController::class, 'index'])->name('dashboard.dge');
     Route::resource('candidats', CandidatController::class);
+    Route::get ('/parrainage-period', [ParrainagePeriodController::class, 'create'])->name('parrainage-period.create');
+    Route::post('/parrainage-period', [ParrainagePeriodController::class, 'store'])->name('parrainage-period.store');
     Route::get('/dge/create-candidat', [AdminController::class, 'showCreateCandidatForm'])->name('dge.create-candidat.form');
     Route::post('/dge/create-candidat', [AdminController::class, 'createCandidat'])->name('dge.create-candidat');
     Route::get('/electeurs/import', [ElecteurController::class, 'showImportForm'])->name('electeurs.import.form');
     Route::post('/electeurs/import', [ElecteurController::class, 'import'])->name('electeurs.import');
     Route::post('/valider-importation', [ElecteurController::class, 'validerImportation'])->name('valider.importation');
+    
 });
 
 Route::get('/login/dge', [DgeAgentLoginController::class, 'showLoginForm'])->name('login.dge');
@@ -31,21 +36,23 @@ Route::post('/login/dge', [DgeAgentLoginController::class, 'login'])->name('logi
 Route::get('/', function () {
     return view('public.welcome');
 });
+Route::middleware('check.parrainage.period')->group(function () {
+    Route::get('/login/electeur', [ElecteurController::class, 'showLoginForm'])->name('login.electeur');
+    Route::post('/login/electeur', [ElecteurController::class, 'login'])->name('login.electeur.post');
 
-Route::get('/login/electeur', [ElecteurController::class, 'showLoginForm'])->name('login.electeur');
-Route::post('/login/electeur', [ElecteurController::class, 'login'])->name('login.electeur.post');
+    Route::get('/login/candidat', [CandidatController::class, 'showLoginForm'])->name('login.candidat');
+    Route::post('/login/candidat', [CandidatController::class, 'login'])->name('login.candidat.post');
 
-Route::get('/login/candidat', [CandidatController::class, 'showLoginForm'])->name('login.candidat');
-Route::post('/login/candidat', [CandidatController::class, 'login'])->name('login.candidat.post');
+    Route::get('/register', [ElecteurController::class, 'showInitialForm'])->name('electeurs.register.form');
+    Route::post('/register/verify', [ElecteurController::class, 'verifyInitialInfo'])->name('electeurs.verify');
+    Route::get('/register/complete', [ElecteurController::class, 'showCompletionForm'])->name('electeurs.complete.form');
+    Route::post('/register/complete', [ElecteurController::class, 'completeRegistration'])->name('electeurs.complete');
+    Route::get('/register/validate', [ElecteurController::class, 'showValidationForm'])->name('electeurs.validate.form');
+    Route::post('/register/validate', [ElecteurController::class, 'validateCode'])->name('electeurs.validate');
 
-Route::get('/register', [ElecteurController::class, 'showInitialForm'])->name('electeurs.register.form');
-Route::post('/register/verify', [ElecteurController::class, 'verifyInitialInfo'])->name('electeurs.verify');
-Route::get('/register/complete', [ElecteurController::class, 'showCompletionForm'])->name('electeurs.complete.form');
-Route::post('/register/complete', [ElecteurController::class, 'completeRegistration'])->name('electeurs.complete');
-Route::get('/register/validate', [ElecteurController::class, 'showValidationForm'])->name('electeurs.validate.form');
-Route::post('/register/validate', [ElecteurController::class, 'validateCode'])->name('electeurs.validate');
+});
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth','check.parrainage.period'])->group(function () {
     Route::middleware('role:candidat')->group(function () {
         Route::get('/candidatDashboard', function () {
             return view('candidat.dashboard');

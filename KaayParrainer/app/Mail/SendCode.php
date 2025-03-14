@@ -33,7 +33,7 @@ class SendCode extends Mailable
     public function build()
     {
         return $this->from('no-reply@kayparrainer.sn')
-                    ->subject('Code d\'authentification pour votre parrainage')
+                    ->subject('Code de Vérification du Parrainage')
                     ->view('emails.send_code')
                     ->with([
                         'electeur' => $this->electeur,

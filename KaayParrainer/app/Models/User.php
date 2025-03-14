@@ -24,6 +24,7 @@ class User extends Authenticatable
     {
         return $this->role === 'candidat';
     }
+
     public function isElecteur()
     {
         return $this->role === 'electeur';

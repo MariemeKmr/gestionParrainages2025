@@ -14,7 +14,7 @@ class ModifyRoleColumnInUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('role', 10)->change(); // Ajustez la longueur selon vos besoins
+            $table->string('role', 20)->change(); // Ajustez la longueur selon vos besoins
         });
     }
 
@@ -26,7 +26,7 @@ class ModifyRoleColumnInUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('role', 5)->change(); // Revenir à la longueur précédente si nécessaire
+            $table->string('role', 10)->change(); // Revenir à la longueur précédente si nécessaire
         });
     }
 }

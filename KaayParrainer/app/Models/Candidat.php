@@ -22,6 +22,7 @@ class Candidat extends Model
         'url_page_infos',
         'user_id',
         'numero_carte_electeur',
+        'nombre_parrainages',
     ];
 
     protected $casts = [

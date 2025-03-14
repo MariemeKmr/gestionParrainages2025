@@ -9,6 +9,7 @@ use App\Models\Electeur;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use App\Mail\SendCode;
 
 class ParrainageController extends Controller
 {
@@ -31,6 +32,11 @@ class ParrainageController extends Controller
         // Récupérer l'électeur associé à l'utilisateur connecté
         $electeur = $user->electeur;
 
+        // Vérifier si l'électeur a déjà parrainé un candidat
+        if (Parrainage::where('electeur_id', $electeur->id)->exists()) {
+            return redirect()->route('parrainage')->with('error', 'Vous avez déjà parrainé un candidat.');
+        }
+
         // Vérifier si le candidat existe
         $candidat = Candidat::find($candidatId);
 
@@ -46,27 +52,13 @@ class ParrainageController extends Controller
             ]);
 
             // Envoyer le code d'authentification par email
-            Mail::to($electeur->adresse_email)->send(new \App\Mail\SendCode($electeur, $codeVerification));
+            Mail::to($electeur->adresse_email)->send(new SendCode($electeur, $codeVerification));
 
-            // Envoyer le code d'authentification par SMS (à implémenter)
-            // Vous pouvez utiliser un service comme Twilio pour envoyer des SMS
-
-            return redirect()->route('parrainage.verify.form')->with('success', 'Un code d\'authentification a été envoyé à votre email et téléphone.');
+            // Rediriger vers la page de saisie du code de vérification
+            return redirect()->route('parrainage.verify.form')->with('success', 'Un code d\'authentification a été envoyé à votre email. Veuillez le saisir pour confirmer votre parrainage.');
         }
 
         return redirect()->route('parrainage')->with('error', 'Candidat non trouvé.');
-    }
-
-    public function incrementParrainage($candidatId)
-    {
-        $candidat = Candidat::find($candidatId);
-
-        if ($candidat) {
-            $candidat->increment('nombre_parrainages');
-            return response()->json(['success' => true]);
-        }
-
-        return response()->json(['success' => false], 404);
     }
 
     public function showVerificationForm()
@@ -100,7 +92,11 @@ class ParrainageController extends Controller
             // Code vérifié avec succès
             $parrainage->update(['code_verification' => null]);
 
-            return redirect()->route('parrainage')->with('success', 'Parrainage enregistré avec succès.');
+            // Incrémenter le nombre de parrainages pour le candidat
+            $candidat = Candidat::find($parrainage->candidat_id);
+            $candidat->increment('nombre_parrainages');
+
+            return redirect()->route('electeur.dashboard')->with('success', 'Parrainage enregistré avec succès.');
         }
 
         return back()->withErrors(['code_verification' => 'Code d\'authentification incorrect.']);

@@ -24,6 +24,7 @@ class RouteServiceProvider extends ServiceProvider
 
         // Register the middleware
         Route::aliasMiddleware('role', \App\Http\Middleware\CheckRole::class);
+        Route::aliasMiddleware('check.parrainage.period', \App\Http\Middleware\CheckParrainagePeriod::class);
     }
 
     protected function configureRateLimiting()

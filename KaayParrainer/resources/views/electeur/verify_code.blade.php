@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.appElecteur')
 
 @section('content')
 <div class="container mx-auto p-6">
@@ -14,7 +14,7 @@
         </div>
     @endif
 
-    <form action="{{ route('parrainage.verify') }}" method="POST">
+    <form action="{{ route('parrainage.verify.form') }}" method="POST">
         @csrf
         <div class="mb-4">
             <label for="code_verification" class="block text-sm font-medium text-gray-700">Code d'authentification</label>

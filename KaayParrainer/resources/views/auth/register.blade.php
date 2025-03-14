@@ -38,31 +38,10 @@
                        class="w-full px-3 py-2 border border-gray-300 rounded-lg">
             </div>
 
-            <!-- Date de Naissance -->
-            <div class="mt-3">
-                <label for="date_naissance" class="block text-sm font-medium text-gray-700">Date de Naissance</label>
-                <input type="date" name="date_naissance" id="date_naissance" required
-                       class="w-full px-3 py-2 border border-gray-300 rounded-lg">
-            </div>
-
             <!-- Bureau de Vote -->
             <div class="mt-3">
                 <label for="bureau_vote" class="block text-sm font-medium text-gray-700">Numéro du Bureau de Vote</label>
                 <input type="text" name="bureau_vote" id="bureau_vote" required
-                       class="w-full px-3 py-2 border border-gray-300 rounded-lg">
-            </div>
-
-            <!-- Numéro de Téléphone -->
-            <div class="mt-3">
-                <label for="telephone" class="block text-sm font-medium text-gray-700">Numéro de Téléphone</label>
-                <input type="text" name="telephone" id="telephone" required
-                       class="w-full px-3 py-2 border border-gray-300 rounded-lg">
-            </div>
-
-            <!-- Email -->
-            <div class="mt-3">
-                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                <input type="email" name="email" id="email" required
                        class="w-full px-3 py-2 border border-gray-300 rounded-lg">
             </div>
 

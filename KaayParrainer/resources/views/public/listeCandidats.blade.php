@@ -10,8 +10,8 @@
             <div class="bg-white p-6 shadow-md rounded-lg text-center">
                 <img src="{{ asset('storage/'.$candidat->photo) }}" alt="Photo de {{ $candidat->prenom }} {{ $candidat->nom }}" class="h-32 w-32 mx-auto rounded-full mb-4">
                 <p class="text-gray-600 mt-4">{{ $candidat->prenom }} {{ $candidat->nom }}</p>
-                <h2 class="text-xl font-semibold">Parti politique: {{ $candidat->parti_politique }}</h2>
-                <p class="text-gray-600 italic">Slogan{{ $candidat->slogan }}</p>
+                <h2 class="text-xl font-semibold">Parti Politique: {{ $candidat->parti_politique }}</h2>
+                <p class="text-gray-600 italic">Slogan: {{ $candidat->slogan }}</p>
 
                 <!-- Afficher les trois couleurs du parti politique sous forme de ronds -->
                 @php

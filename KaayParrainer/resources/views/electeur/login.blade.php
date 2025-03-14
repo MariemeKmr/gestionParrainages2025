@@ -1,10 +1,15 @@
-@extends('layouts.app')
+@extends('layouts.appElecteur')
 
 @section('content')
 <div class="flex justify-center items-center h-screen bg-gray-100">
     <div class="w-full max-w-md bg-white shadow-md rounded-lg p-6">
         <h2 class="text-2xl font-bold text-center text-gray-800">Connexion Electeur</h2>
         <p class="text-gray-600 text-center mb-4">Veuillez entrer vos informations pour vous connecter.</p>
+        @if (session('error'))
+        <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
 
         @if ($errors->any())
             <div class="bg-red-100 text-red-700 p-4 rounded mb-4">

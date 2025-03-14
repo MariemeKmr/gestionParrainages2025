@@ -17,13 +17,13 @@
             <!-- Réseaux sociaux -->
             <div class="flex space-x-4">
                 <a href="https://facebook.com" target="_blank" class="text-gray-400 hover:text-white">
-                    <span class="material-symbols-sharp">facebook</span>
+                    <i class="fab fa-facebook-f"></i>
                 </a>
                 <a href="https://twitter.com" target="_blank" class="text-gray-400 hover:text-white">
-                    <span class="material-symbols-sharp">twitter</span>
+                    <i class="fab fa-x"></i>
                 </a>
                 <a href="https://instagram.com" target="_blank" class="text-gray-400 hover:text-white">
-                    <span class="material-symbols-sharp">instagram</span>
+                    <i class="fab fa-instagram"></i>
                 </a>
             </div>
         </div>

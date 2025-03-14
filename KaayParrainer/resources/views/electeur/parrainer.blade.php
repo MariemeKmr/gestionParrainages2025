@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.appElecteur')
 
 @section('content')
 <div class="container mx-auto p-6">
@@ -10,8 +10,8 @@
             <div class="bg-white p-6 shadow-md rounded-lg text-center">
                 <img src="{{ asset('storage/'.$candidat->photo) }}" alt="Photo de {{ $candidat->prenom }} {{ $candidat->nom }}" class="h-32 w-32 mx-auto rounded-full mb-4">
                 <p class="text-gray-600 mt-4">{{ $candidat->prenom }} {{ $candidat->nom }}</p>
-                <h2 class="text-xl font-semibold">{{ $candidat->parti_politique }}</h2>
-                <p class="text-gray-600 italic">"{{ $candidat->slogan }}"</p>
+                <h2 class="text-xl font-semibold">Parti Politique: {{ $candidat->parti_politique }}</h2>
+                <p class="text-gray-600 italic">Slogan: "{{ $candidat->slogan }}"</p>
 
                 <!-- Afficher les trois couleurs du parti politique sous forme de ronds -->
                 @php
@@ -23,7 +23,7 @@
                     @endforeach
                 </div>
 
-                <form action="{{ route('parrainage.post', ['candidatId' => $candidat->id]) }}" method="POST" onsubmit="return confirmParrainage(event, {{ $candidat->id }})">
+                <form action="{{ route('parrainage.post', ['candidatId' => $candidat->id]) }}" method="POST">
                     @csrf
                     <button type="submit" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
                         Parrainer
@@ -33,31 +33,4 @@
         @endforeach
     </div>
 </div>
-
-<script>
-    function confirmParrainage(event, candidatId) {
-        event.preventDefault();
-        if (confirm("Voulez-vous vraiment parrainer ce candidat ?")) {
-            fetch(`{{ url('/parrainage/increment') }}/${candidatId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    event.target.submit();
-                } else {
-                    alert('Erreur lors de l\'incrémentation du parrainage.');
-                }
-            })
-            .catch(error => {
-                console.error('Erreur:', error);
-                alert('Erreur lors de l\'incrémentation du parrainage.');
-            });
-        }
-    }
-</script>
 @endsection

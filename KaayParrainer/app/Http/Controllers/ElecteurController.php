@@ -97,6 +97,11 @@ class ElecteurController extends Controller
         ->where('prenom', $electeurInfo['prenom'])
         ->where('numero_bureau_vote', $electeurInfo['numero_bureau_vote'])
         ->first();
+        // Récupérer l'utilisateur connecté
+        $user = Auth::user();
+
+        // Vérifier si l'utilisateur a un électeur associé
+        $electeur = Electeur::where('user_id', $user->id)->first();
 
     if ($electeur) {
         // Mettre à jour les informations de contact
@@ -116,6 +121,7 @@ class ElecteurController extends Controller
             'numero_telephone' => $request->numero_telephone,
             'adresse_email' => $request->adresse_email,
             'code_auth' => rand(100000, 999999),
+            'user_id' => $user->id,
         ]);
     }
 
@@ -292,7 +298,7 @@ class ElecteurController extends Controller
         $this->controlerFichierElecteurs($filePath, $request->checksum);
         $this->controlerElecteurs();
 
-        return redirect()->route('electeurs.import')->with('success', 'Fichier importé avec succès.');
+        return redirect()->route('dashboard.dge')->with('success', 'Fichier importé avec succès.');
     }
 
     private function controlerFichierElecteurs($filePath, $checksum)

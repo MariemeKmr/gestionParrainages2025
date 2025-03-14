@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.appElecteur')
 
 @section('content')
-@include('layouts.sidebar')
+@include('layouts.sidebarelecteur')
 
 @endsection
