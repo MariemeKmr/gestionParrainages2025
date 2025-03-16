@@ -21,7 +21,7 @@ class UserController extends Controller
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $candidat = Auth::candidat();
+        $candidat = Auth::user(); // Correction ici
 
         if ($request->file('photo')) {
             // Supprimer l'ancienne photo si elle existe
@@ -43,7 +43,7 @@ class UserController extends Controller
         $request->validate([
             'email' => 'required|string|email|max:255',
             'telephone' => 'required|string|max:255',
-            'password' => 'nullable|string|min:8|confirmed',
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
 
         $user = Auth::user();

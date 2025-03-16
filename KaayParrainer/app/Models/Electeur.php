@@ -10,18 +10,19 @@ class Electeur extends Model
     use HasFactory;
 
     protected $fillable = [
-        'numero_carte_electeur', 
-        'numero_carte_identite', 
-        'nom', 
-        'prenom', 
-        'date_naissance', 
-        'lieu_naissance', 
-        'sexe', 
-        'numero_telephone', 
-        'adresse_email', 
+        'numero_carte_electeur',
+        'numero_carte_identite',
+        'nom',
+        'prenom',
+        'date_naissance',
+        'lieu_naissance',
+        'sexe',
+        'numero_telephone',
+        'adresse_email',
         'numero_bureau_vote',
         'code_auth',
-        'user_id', // Ajouter le champ user_id
+        'user_id',
+
     ];
 
     public function parrainages()

@@ -14,11 +14,20 @@ use App\Http\Controllers\CandidatController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\ParrainagePeriodController;
 use App\Http\Middleware\CheckParrainagePeriod;
+use App\Http\Middleware\CheckRole;
+use App\Http\Controllers\PartiController;
+use App\Http\Controllers\ImportController;
+use App\Http\Controllers\ProfileController;
+
+
+Route::get('/', function () {
+    return view('public.welcome');
+});
 
 Route::get('/send-email/{user}', [MailController::class, 'sendCandidatAccountCreatedEmail']);
 
-Route::middleware(['auth', 'role:agentdge'])->group(function () {
-    Route::get('/dashboard/dge', [CandidatController::class, 'index'])->name('dashboard.dge');
+Route::middleware(['auth', CheckRole::class . ':agentdge'])->group(function () {
+    Route::get('/dashboard/dge', [CandidatController::class, 'showDashboard'])->name('dashboard.dge');
     Route::resource('candidats', CandidatController::class);
     Route::get ('/parrainage-period', [ParrainagePeriodController::class, 'create'])->name('parrainage-period.create');
     Route::post('/parrainage-period', [ParrainagePeriodController::class, 'store'])->name('parrainage-period.store');
@@ -27,22 +36,17 @@ Route::middleware(['auth', 'role:agentdge'])->group(function () {
     Route::get('/electeurs/import', [ElecteurController::class, 'showImportForm'])->name('electeurs.import.form');
     Route::post('/electeurs/import', [ElecteurController::class, 'import'])->name('electeurs.import');
     Route::post('/valider-importation', [ElecteurController::class, 'validerImportation'])->name('valider.importation');
-    
+
 });
 
 Route::get('/login/dge', [DgeAgentLoginController::class, 'showLoginForm'])->name('login.dge');
 Route::post('/login/dge', [DgeAgentLoginController::class, 'login'])->name('login.dge.post');
 
-Route::get('/', function () {
-    return view('public.welcome');
-});
 Route::middleware('check.parrainage.period')->group(function () {
     Route::get('/login/electeur', [ElecteurController::class, 'showLoginForm'])->name('login.electeur');
     Route::post('/login/electeur', [ElecteurController::class, 'login'])->name('login.electeur.post');
-
     Route::get('/login/candidat', [CandidatController::class, 'showLoginForm'])->name('login.candidat');
     Route::post('/login/candidat', [CandidatController::class, 'login'])->name('login.candidat.post');
-
     Route::get('/register', [ElecteurController::class, 'showInitialForm'])->name('electeurs.register.form');
     Route::post('/register/verify', [ElecteurController::class, 'verifyInitialInfo'])->name('electeurs.verify');
     Route::get('/register/complete', [ElecteurController::class, 'showCompletionForm'])->name('electeurs.complete.form');
@@ -52,23 +56,26 @@ Route::middleware('check.parrainage.period')->group(function () {
 
 });
 
-Route::middleware(['auth','check.parrainage.period'])->group(function () {
-    Route::middleware('role:candidat')->group(function () {
-        Route::get('/candidatDashboard', function () {
+    Route::middleware(['auth','check.parrainage.period'])->group(function () {
+        Route::middleware('role:candidat')->group(function () {
+            Route::get('/candidatDashboard', function () {
             return view('candidat.dashboard');
-        })->name('candidat.dashboard');
-
-        // Ajouter la route pour afficher le nombre de messages hebdomadaires
+            })->name('candidat.dashboard');
+                Route::get('/parrainage', [ParrainageController::class, 'index'])->name('parrainage');
+                Route::post('/parrainage/{candidatId}', [ParrainageController::class, 'parrainer'])->name('parrainage.post');
+                Route::get('/parrainage/verify', [ParrainageController::class, 'showVerificationForm'])->name('parrainage.verify.form');
+                Route::post('/parrainage/verify', [ParrainageController::class, 'verifyCode'])->name('parrainage.verify');
+                Route::get('/parrainages', [ParrainageController::class, 'index'])->name('parrainages.index'); // Ajoutez cette ligne
         Route::get('/candidat/{candidat}/messages/weekly', [CandidatController::class, 'countWeeklyMessages'])->name('candidat.messages.weekly');
     });
 
-    Route::middleware('role:electeur')->group(function () {
+    Route::middleware(['auth', CheckRole::class . ':electeur'])->group(function () {
         Route::get('/electeurDashboard', function () {
             return view('electeur.dashboard');
         })->name('electeur.dashboard');
     });
 
-    Route::get('/profil', [UserController::class, 'showProfile'])->name('profil');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::get('/messages', [MessageController::class, 'index'])->name('message');
     Route::get('/parrainage', [ParrainageController::class, 'index'])->name('parrainage');
     Route::post('/parrainage/{candidatId}', [ParrainageController::class, 'parrainer'])->name('parrainage.post');
@@ -76,7 +83,8 @@ Route::middleware(['auth','check.parrainage.period'])->group(function () {
     Route::post('/parrainage/verify', [ParrainageController::class, 'verifyCode'])->name('parrainage.verify');
 });
 
-Route::get('/listeCandidats', [CandidatController::class, 'idi'])->name('listeCandidats');
+Route::get('/candidats/{id}', [CandidatController::class, 'show'])->name('candidats.show');
+Route::get('/listeCandidats', [CandidatController::class, 'listeCandidats'])->name('listeCandidats');
 Route::get('/contact', function () {
     return view('public.contact');
 });

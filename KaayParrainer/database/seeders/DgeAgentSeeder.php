@@ -18,7 +18,7 @@ class DgeAgentSeeder extends Seeder
         DB::table('users')->insert([
             'name' => 'Agent DGE',
             'email' => 'agent.dge@example.com',
-            'password' => Hash::make('password'), // Changez le mot de passe selon vos besoins
+            'password' => Hash::make('password'),
             'role' => 'agentdge',
             'created_at' => now(),
             'updated_at' => now(),

@@ -1,8 +1,23 @@
-@extends('layouts.app')
+@switch(Auth::user()->role)
+    @case('agentdge')
+        @extends('layouts.appDge')
+        @break
+
+    @case('candidat')
+        @extends('layouts.appCandidat')
+        @break
+
+    @case('electeur')
+        @extends('layouts.appElecteur')
+        @break
+
+    @default
+        @extends('layouts.app')
+@endswitch
 
 @section('content')
 <div class="container mx-auto p-6">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Liste des candidat</h1>
+    <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Liste des candidats</h1>
 
     <!-- Liste des candidats -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.appDge')
 
 @section('content')
 <div class="container mx-auto p-6">
@@ -10,17 +10,17 @@
         </div>
     @endif
 
-    <form action="{{ route('parrainage-period.store') }}" method="POST">
+    <form action="{{ route('parrainage-period.store') }}" method="POST" class="bg-white p-6 rounded-lg shadow-md">
         @csrf
         <div class="mb-4">
             <label for="start_date" class="block text-sm font-medium text-gray-700">Date de début</label>
-            <input type="date" name="start_date" id="start_date" value="{{ $period->start_date ?? '' }}" required class="mt-1 block w-full">
+            <input type="date" name="start_date" id="start_date" value="{{ $period->start_date ?? '' }}" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500">
         </div>
         <div class="mb-4">
             <label for="end_date" class="block text-sm font-medium text-gray-700">Date de fin</label>
-            <input type="date" name="end_date" id="end_date" value="{{ $period->end_date ?? '' }}" required class="mt-1 block w-full">
+            <input type="date" name="end_date" id="end_date" value="{{ $period->end_date ?? '' }}" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500">
         </div>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Enregistrer</button>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">Enregistrer</button>
     </form>
 </div>
 @endsection

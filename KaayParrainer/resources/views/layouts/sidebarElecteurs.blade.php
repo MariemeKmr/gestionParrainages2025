@@ -10,7 +10,7 @@
         <li>
             <a href="{{ route('parrainages.index') }}" class="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                 <span class="material-icons">how_to_vote</span>
-                <span class="ml-3">Mes Parrainages</span>
+                <span class="ml-3">Parrainages</span>
             </a>
         </li>
         <li>

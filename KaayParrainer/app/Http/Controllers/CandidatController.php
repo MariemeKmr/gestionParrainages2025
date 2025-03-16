@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Candidat;
-use App\Models\Notification; // Importer le modèle Notification
-use App\Models\Message; // Importer le modèle Message pour le comptage des messages
+use App\Models\Notification;
+use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\User;
@@ -12,16 +12,30 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MailCandidat;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\PasswordChangedNotification; // Importer la notification
-use Carbon\Carbon; // Pour travailler avec les dates
+use App\Notifications\PasswordChangedNotification;
+use Carbon\Carbon;
 
 class CandidatController extends Controller
 {
+    public function showDashboard()
+    {
+        return view('dge.dashboard');
+    }
+    public function show($id)
+    {
+        $candidat = Candidat::findOrFail($id);
+        return view('dge.candidats.show', compact('candidat'));
+    }
+    public function index()
+    {
+        $candidats = Candidat::all();
+        return view('dge.candidats.index', compact('candidats'));
+    }
     public function showLoginForm()
     {
         return view('candidats.login');
     }
-    
+
     public function login(Request $request)
     {
         $request->validate([
@@ -43,13 +57,8 @@ class CandidatController extends Controller
         return back()->withErrors(['email' => 'Les informations d\'identification ne correspondent pas.']);
     }
 
-    public function index()
-    {
-        $candidats = Candidat::all();
-        return view('dge.dashboard', compact('candidats'));
-    }
 
-    public function idi()
+    public function listeCandidats()
     {
         $candidats = Candidat::all();
         return view('public.listeCandidats', compact('candidats'));
@@ -57,7 +66,7 @@ class CandidatController extends Controller
 
     public function create()
     {
-        return view('candidats.create');
+        return view('candidat.create');
     }
 
     public function store(Request $request)
@@ -102,7 +111,7 @@ class CandidatController extends Controller
             'photo' => $photoPath,
             'trois_couleurs_parti' => json_encode([$request->couleur1, $request->couleur2, $request->couleur3]),
             'url_page_infos' => $request->url_info,
-            'user_id' => auth()->id(),
+            'user_id' => $user->id,
             'numero_carte_electeur' => Str::uuid()
         ]);
 

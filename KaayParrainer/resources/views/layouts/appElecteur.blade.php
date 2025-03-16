@@ -22,7 +22,7 @@
     <div class="flex flex-col min-h-screen">
         <main class="flex-1 p-6">
             @yield('content')
-            @include('layouts.sidebarelecteur')
+            @include('layouts.sidebarelecteurs')
         </main>
 
         <!-- Footer -->

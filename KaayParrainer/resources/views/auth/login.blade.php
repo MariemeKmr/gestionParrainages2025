@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('no-sidebar', true)
+
 @section('content')
 <div class="flex justify-center items-center h-screen bg-gray-100">
     <div class="w-full max-w-md bg-white shadow-md rounded-lg p-6">

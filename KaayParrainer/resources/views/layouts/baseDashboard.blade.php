@@ -23,7 +23,7 @@
     <!-- Contenu Principal -->
     <div class="flex">
         <!-- Sidebar -->
-        @include('layouts.sidebar')
+        @include('layouts.sidebarelecteur')
 
         <!-- Main Content -->
         <main class="flex-1 p-6">

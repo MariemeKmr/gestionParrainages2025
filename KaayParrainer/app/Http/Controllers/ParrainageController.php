@@ -19,6 +19,7 @@ class ParrainageController extends Controller
         return view('electeur.parrainer', compact('candidats'));
     }
 
+
     public function parrainer(Request $request, $candidatId)
     {
         // Récupérer l'utilisateur connecté

@@ -5,7 +5,7 @@
     <title>Code d'authentification</title>
 </head>
 <body>
-    <h1>Bonjour {{ $electeur->nom }},</h1>
+    <h1>Bonjour {{ $candidat->prenom }} {{ $electeur->nom }},</h1>
     <p>Votre code d'authentification est : <strong>{{ $code_auth }}</strong></p>
     <p>Merci d'utiliser notre service.</p>
     <p>Cordialement,</p>
