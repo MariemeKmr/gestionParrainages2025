@@ -1,0 +1,12 @@
+{
+    "deploy": {
+      "files": ["KaayParrainer"] 
+    },
+  
+    "apps": {
+      "KaayParrainer": {
+        "path": "KaayParrainer"
+      }
+    }
+  }
+  
