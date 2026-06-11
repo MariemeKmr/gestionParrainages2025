@@ -1,0 +1,23 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "api/index.php",
+        "use": "@vercel/php",
+        "config": {
+          "maxLambdaSize": "50mb"
+        }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "api/index.php"
+      }
+    ],
+    "build": {
+      "env": {
+        "COMPOSER_OPTIONS": "--no-dev"
+      }
+    }
+  }
