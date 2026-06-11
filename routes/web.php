@@ -70,8 +70,8 @@ Route::middleware(['auth','check.parrainage.period'])->group(function () {
     Route::get('/messages', [MessageController::class, 'index'])->name('message');
     Route::get('/parrainage', [ParrainageController::class, 'index'])->name('parrainage');
     Route::post('/parrainage/{candidatId}', [ParrainageController::class, 'parrainer'])->name('parrainage.parrainer');
-    Route::get('/parrainage/verify', [ParrainageController::class, 'showVerificationForm'])->name('parrainage.verify.form');
-    Route::post('/parrainage/verify', [ParrainageController::class, 'verifyCode'])->name('parrainage.verify');
+    Route::get('/parrainage/verify/{candidatId}', [ParrainageController::class, 'showVerificationForm'])->name('parrainage.verify.form');
+    Route::post('/parrainage/verify/{candidatId}', [ParrainageController::class, 'verifyCode'])->name('parrainage.verify');
 });
 
 Route::get('/listeCandidats', [CandidatController::class, 'idi'])->name('listeCandidats');

@@ -2,14 +2,7 @@
                 <aside class="w-64 bg-white dark:bg-gray-800 shadow-md h-screen p-5">
                     <h5 class="text-lg font-semibold text-gray-700 dark:text-white">Menu</h5>
                     <ul class="mt-4 space-y-2">
-                        <li>
-                            <a
-                                href="{{url("/ContentDashboard")}}"
-                                class="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <span class="material-symbols-sharp">grid_view</span>
-                                <span class="ml-3">Dashboard</span>
-                            </a>
-                        </li>
+                        
                         <li>
                             <a
                                 href="{{ route('profil') }}"

@@ -13,7 +13,7 @@ class Parrainage extends Model
         'code_verification',
         'date_debut',
         'date_fin',
-        'status',
+        'statut',
     ];
 
     // Define relationships

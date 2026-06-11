@@ -14,13 +14,13 @@
         </div>
     @endif
 
-    <form action="{{ route('parrainage.verify.form') }}" method="POST">
-        @csrf
-        <div class="mb-4">
-            <label for="code_verification" class="block text-sm font-medium text-gray-700">Code de vérification</label>
-            <input type="text" name="code_verification" id="code_verification" required class="mt-1 block w-full">
-        </div>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Vérifier</button>
-    </form>
-</div>
+    <form action="{{ route('parrainage.verify', ['candidatId' => $candidatId]) }}" method="POST">
+    @csrf
+    <input type="hidden" name="candidatId" value="{{ $candidatId }}">
+    <div class="mb-4">
+        <label for="code_verification" class="block text-sm font-medium text-gray-700">Code de vérification</label>
+        <input type="text" name="code_verification" id="code_verification" required class="mt-1 block w-full">
+    </div>
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Vérifier</button>
+</form>
 @endsection

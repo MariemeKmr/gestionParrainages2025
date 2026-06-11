@@ -20,6 +20,14 @@
                                 <span class="ml-auto bg-blue-500 text-white px-2 py-1 text-xs rounded-full">14</span>
                             </a>
                         </li>
+                        <li>
+                            <a
+                                href="{{ route('statistiques') }}"
+                                class="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <span class="material-symbols-sharp">bar_chart</span>
+                                <span class="ml-3">Statistiques</span>
+                            </a>
+                        </li>
     
                         <li>
                             {{--

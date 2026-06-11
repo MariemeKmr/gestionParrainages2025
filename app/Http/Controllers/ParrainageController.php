@@ -34,7 +34,7 @@ class ParrainageController extends Controller
     $electeur = $user->electeur;
 
     // Vérifier si l'électeur a déjà parrainé un candidat
-    if (Parrainage::where('electeur_id', $electeur->id)->exists()) {
+    if (Parrainage::where('electeur_id', $electeur->id)->where('statut','validé')->exists()) {
         return redirect()->route('parrainage')->with('error', 'Vous avez déjà parrainé un candidat.');
     }
 
@@ -58,41 +58,53 @@ class ParrainageController extends Controller
         // Envoyer un email avec le code de vérification
         Mail::to($electeur->adresse_email)->send(new SendCode($electeur, $codeVerification));
 
-        return redirect()->route('parrainage.verify')->with('success', 'Parrainage créé avec succès. Veuillez vérifier votre email pour le code de vérification.');
-    }
+        return redirect()->route('parrainage.verify.form', ['candidatId' => $candidat->id])
+    ->with('success', 'Parrainage créé avec succès. Veuillez vérifier votre email pour le code de vérification.'); }
 
     \Log::debug('Candidat non trouvé avec ID: ' . $candidatId);
     return redirect()->route('parrainage')->with('error', 'Candidat non trouvé.');
 }
-    public function showVerificationForm()
+    public function showVerificationForm($candidatId)
     {
-        return view('electeur.verify_code');
+        return view('electeur.verify_code', compact('candidatId'));
     }
 
-    public function verifyCode(Request $request)
-{
-    // Récupérer l'utilisateur connecté
-    $user = Auth::user();
 
-    // Récupérer l'électeur associé à l'utilisateur connecté
-    $electeur = $user->electeur;
-
-    // Vérifier le code d'authentification
-    $parrainage = Parrainage::where('electeur_id', $electeur->id)
-        ->where('code_verification', $request->code_verification)
-        ->first();
-
-    if ($parrainage) {
-        // Code vérifié avec succès
-        $parrainage->update(['code_verification' => null, 'status' => 'verified']);
-
-        // Incrémenter le nombre de parrainages pour le candidat
-        $candidat = Candidat::find($parrainage->candidat_id);
-        $candidat->increment('nombre_parrainages');
-
-        return redirect()->route('parrainage')->with('success', 'Parrainage enregistré avec succès.');
+    public function verifyCode(Request $request, $candidatId)
+    {
+        // Récupérer l'utilisateur connecté
+        $user = Auth::user();
+    
+        // Récupérer l'électeur associé à l'utilisateur connecté
+        $electeur = $user->electeur;
+    
+        $request->validate([
+            'code_verification' => 'required|string|max:10',
+        ]);
+    
+        // Vérifier le code d'authentification
+        $parrainage = Parrainage::where('electeur_id', $electeur->id)
+            ->where('candidat_id', $candidatId)
+            ->where('code_verification', $request->code_verification)
+            ->where('statut', 'en_attente')
+            ->first();
+    
+        if ($parrainage) {
+            // Code vérifié avec succès
+            $parrainage->update(['code_verification' => null, 'statut' => 'validé']);
+    
+            // Incrémenter le nombre de parrainages pour le candidat
+            $candidat = Candidat::find($parrainage->candidat_id);
+            if ($candidat) {
+                $candidat->increment('nombre_parrainages');
+            }
+            \Log::debug('Parrainage trouvé : ', ['parrainage' => $parrainage]);
+            \Log::debug('Candidat trouvé : ', ['candidat' => $candidat]);
+    
+            return redirect()->route('parrainage')->with('success', 'Parrainage enregistré avec succès.');
+        }
+    
+        return redirect()->route('parrainage.verify.form', ['candidatId' => $candidatId])
+            ->with('error', 'Code de vérification incorrect.');
     }
-
-    return redirect()->route('parrainage.verify.form')->with('error', 'Code de vérification incorrect.');
-}
 }

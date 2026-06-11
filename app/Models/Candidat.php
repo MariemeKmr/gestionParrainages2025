@@ -34,4 +34,8 @@ class Candidat extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function parrainages()
+    {
+        return $this->hasMany(Parrainage::class, 'candidat_id');
+    }
 }

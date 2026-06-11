@@ -41,6 +41,9 @@
                     Se connecter
                 </button>
             </div>
+            <div class="mt-4 text-center">
+            <a href="{{ route('electeurs.register.form') }}" class="text-blue-600 hover:underline">Créer un compte</a>
+            </div>
         </form>
     </div>
 </div>
